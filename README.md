@@ -32,6 +32,7 @@ AI-agentlar orqali avtomatlashtirilgan holda — qurish uchun bilim bazasi va (k
 | [`docs/04-pr-strategiya.md`](docs/04-pr-strategiya.md) | PR: xalqaro + ichki bozor, 6 oylik taqvim, KPI |
 | [`docs/05-brand-strategiya.md`](docs/05-brand-strategiya.md) | Brend: 9 qadam, pozitsiya, vizual, verbal |
 | [`docs/06-ai-agent-tizimi.md`](docs/06-ai-agent-tizimi.md) | Marketing konveyeri: qaysi agent nima qiladi (arxitektura) |
+| [`docs/07-byudjet.md`](docs/07-byudjet.md) | Byudjet taqsimoti — har Expo uchun $5,000 (Xitoy + Qozog'iston) |
 
 ---
 

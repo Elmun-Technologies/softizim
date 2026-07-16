@@ -44,18 +44,20 @@ Sotuv = Lead soni × Konversiya × O'rtacha chek × Qaytish (retention)
 
 > ×2 × 1.5 × 1.3 × 1.4 ≈ **x5.4** — ya'ni x4 realistik, agar 4 richag birga ishlasa.
 
-## Hozirgi holat (ma'lum bo'lgani)
+## Tasdiqlangan qarorlar
 
-- Marketing kanallari va byudjet mavjud (aniq raqamlar keyin kiritiladi — pastdagi bo'shliqni to'ldirish kerak).
-- Ulangan tool'lar: Meta Ads, Gmail, Google Calendar, Supabase, Mobbin, 21st.dev.
+- ✅ **Ustuvor xalqaro davlatlar:** Xitoy + Qozog'iston
+- ✅ **Byudjet:** har tadbir uchun $5,000 (yillik jami $25,000) — taqsimoti: [`07-byudjet.md`](07-byudjet.md)
+- ✅ **Tajriba:** 5+ yil → mavjud exponent bazasi bor (qayta sotish uchun eng arzon lead)
+- ✅ **Kanal mantig'i:** Qozog'iston = Meta/IG reklama · Xitoy = outreach (Alibaba/LinkedIn/AI-video)
 
-### To'ldirilishi kerak bo'lgan ma'lumotlar (data gaps)
+## Ulangan tool'lar
 
-Tizimni aniq sozlash uchun quyidagilar kerak:
+Meta Ads · Gmail · Google Calendar · Supabase · Mobbin · 21st.dev.
 
-- [ ] Har bir tadbir bo'yicha: o'tgan yilgi exponentlar soni, stend narxi, umumiy tushum
-- [ ] Hozirgi marketing kanallari va oylik/yillik byudjet taqsimoti
-- [ ] Har kanal bo'yicha lead narxi (CPL) va konversiya
-- [ ] Meta Ads akkaunt ID va o'tgan kampaniya natijalari
-- [ ] Mavjud exponent bazasi (CRM / Excel) — outreach uchun
-- [ ] Marketing jamoasi tarkibi va rollari
+### Hali to'ldirilishi kerak bo'lgan ma'lumotlar (data gaps)
+
+- [ ] Har tadbir bo'yicha: o'tgan yilgi exponentlar soni, stend narxi, umumiy tushum
+- [ ] Meta Ads akkaunt ID va o'tgan kampaniya natijalari (CPL/konversiya)
+- [ ] **Mavjud exponent bazasi (Excel/CRM)** — Supabase'ga import uchun (5 yillik baza)
+- [ ] Pilot tadbir tasdig'i (tavsiya: Build Pro Expo — oktabr)
