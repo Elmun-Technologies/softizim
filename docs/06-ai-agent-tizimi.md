@@ -50,10 +50,17 @@ Kerakli jadvallar (keyingi bosqichda migratsiya bilan yaratiladi):
 | O'tgan yilgi exponent | CRM | "Qaytish 20% + do'st olib kel 15%" |
 | Mahalliy zavod (viloyat) | Roadshow, tender | "Jamoa effekti — Farg'onadan 4 zavod qo'shildi" |
 
+## Real kod (implementatsiya)
+
+Bu arxitektura `../system/` papkasida **ishlaydigan kod** sifatida qurilgan:
+TypeScript + Claude (`claude-opus-4-8`/`claude-haiku-4-5`) + Supabase. Ishga tushirish:
+`cd system && npm install && npm run cycle`. Batafsil: [`../system/README.md`](../system/README.md).
+
 ## Bosqichma-bosqich yo'l xaritasi
 
-- **Faza 0 (hozir):** ✅ Bilim bazasi saralandi (bu repo).
-- **Faza 1:** Supabase CRM sxemasi + mavjud exponent bazasini import. Agent arxitekturasini tasdiqlash.
+- **Faza 0:** ✅ Bilim bazasi saralandi (bu repo).
+- **Faza 1:** ✅ Supabase CRM sxemasi (`system/db/migrations`) + 8 agent + orkestrator qurildi.
+  Qoldi: mavjud exponent bazasini import, Supabase loyihasini ulash.
 - **Faza 2:** Content Studio + Outreach agentlari — 1 ta tadbir (Build Pro Expo, oktabr) pilot.
 - **Faza 3:** Ad Manager (Meta Ads) + Analytics — CPL va konversiyani real o'lchash.
 - **Faza 4:** To'liq konveyer — 5 tadbirga kengaytirish, xalqaro segment (`03`).
