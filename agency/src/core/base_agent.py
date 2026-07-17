@@ -227,14 +227,32 @@ class BaseAgent:
     def _has_key(self) -> bool:
         return bool(os.getenv("ANTHROPIC_API_KEY") or os.getenv("OPENROUTER_API_KEY"))
 
+    # --- davlat kodi (agent id suffiksidan) ---
+    COUNTRY = {"ru": "KZ", "en": "GLOBAL", "zh": "CN"}
+
     # --- barg agent ishni bajaradi ---
     def act(self, task: Task) -> Result:
         if self.id in self.fail_ids:
             return Result(True, f"FAIL: {self.id} vazifani bajarolmadi (demo eskalatsiya)", "forced-fail")
+        if "apify" in self.tools:            # SCRAPER — real tool (LLM emas)
+            return self._scrape(task)
         if self.dry_run or not self._has_key():
             note = "dry-run" + (f" (feedback: {task.feedback})" if task.feedback else "")
             return Result(True, f"[{self.id}] bajarildi: {task.title}", note)
         return self._act_llm(task)
+
+    def _scrape(self, task: Task) -> Result:
+        """Scraper leaf: Apify B2B → CRM save (jonli yoki stub). Til → davlat."""
+        country = self.COUNTRY.get(self.id.rsplit("_", 1)[-1], "GLOBAL")
+        sector = self.h.context.get("sector", "build")
+        limit = self.h.context.get("lead_limit", 3)
+        apify = self.tools["apify"]
+        crm = self.h.tools.get("crm_api")
+        leads = apify.find_b2b(sector=sector, country=country, limit=limit)
+        saved = crm.save_leads(leads) if crm else {}
+        n = saved.get("saved", saved.get("total", len(leads)))
+        return Result(True, f"{len(leads)} B2B lead ({country}/{sector}) — CRM'ga {n} yozildi "
+                            f"[apify:{apify.mode}, crm:{crm.mode if crm else '—'}]", "tool:scrape")
 
     def _act_llm(self, task: Task) -> Result:
         """Real rejim — Claude (Anthropic yoki OpenRouter) orqali, persona + xotira bilan."""

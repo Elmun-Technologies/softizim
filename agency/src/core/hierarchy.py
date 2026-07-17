@@ -27,6 +27,7 @@ class Hierarchy:
         self.configs: dict[str, dict] = {}
         self.agents: dict[str, BaseAgent] = {}
         self.tools = {tid: cls() for tid, cls in TOOL_CLASSES.items()}  # Level 6
+        self.context: dict = {}          # kampaniya konteksti (sector, event, lead_limit...)
         self.root_id: str | None = None
         self._load_configs()
         self._instantiate(dry_run, fail_ids)
@@ -87,3 +88,12 @@ class Hierarchy:
         if tg is None:
             return {"sent": False, "reason": "telegram_bot yo'q"}
         return tg.notify(f"{prefix} {text}")
+
+    def notify_wrap(self, agent, task):
+        """Agentni ishga tushiradi va yakunda Telegram signal (approval/alert) yuboradi."""
+        res = agent.handle(task)
+        if res.ok:
+            self.notify(f"'{task.title}' — barcha bo'limlar bajardi.", "approval")
+        else:
+            self.notify(f"'{task.title}' — YAKUNIY ESKALATSIYA: {res.output}", "alert")
+        return res

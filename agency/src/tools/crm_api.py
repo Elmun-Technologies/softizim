@@ -56,6 +56,15 @@ class CRMClient(BaseTool):
             return {"mode": "stub", "stored": len(self._contacts)}
         return self._rest("POST", "contacts", row)
 
+    # --- umumiy insert (loglar: agent_runs / agent_messages / task_states / agent_lessons) ---
+    def insert(self, table: str, rows: list[dict] | dict) -> dict:
+        rows = rows if isinstance(rows, list) else [rows]
+        if not self.available():
+            return {"mode": "stub", "table": table, "rows": len(rows)}
+        res = self._rest("POST", table, rows)
+        n = len(res) if isinstance(res, list) else 0
+        return {"mode": "live", "table": table, "inserted": n, "detail": res if not n else "ok"}
+
     # --- lead o'qish ---
     def list_companies(self, status: str | None = None) -> list[dict]:
         if not self.available():

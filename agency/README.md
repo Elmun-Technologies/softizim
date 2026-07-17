@@ -105,7 +105,8 @@ cp .env.example .env          # kalitlarni to'ldiring (ixtiyoriy — stub'siz dr
 
 python3 main.py               # CMO→PM→Head delegatsiya oqimi (dry-run)
 FAIL_IDS=targetolog python3 main.py   # eskalatsiya demosi
-python3 demo_integration.py   # LLM + Tools + Hermes xotira integratsiyasi
+python3 demo_integration.py   # dekompozitsiya + Tools + LLM + Hermes xotira
+python3 run_campaign.py build-pro-expo   # bitta Expo uchun TO'LIQ E2E kampaniya sikli
 
 # Real Claude bilan:
 DRY_RUN=0 ANTHROPIC_API_KEY=... python3 main.py
