@@ -1,0 +1,29 @@
+# Sof Expo Agency — Outreach Rus/Qozog'iston (Level 5)
+id: outreach_ru
+level: 5
+role: "Outreach RU"
+role_uz: "Outreach (Rus/Qozog'iston)"
+model: claude-sonnet-5
+reports_to: leadgen_ru
+manages:
+  - telegram_bot
+  - crm_api
+mission: >
+  Rossiya va Qozog'iston bozori kompaniyalariga ru tilida shaxsiy taklif yozadi/yuboradi, javoblarni kuzatadi.
+responsibilities:
+  - Shaxsiy xat (ru tilida)
+  - Yuborish (telegram/email)
+  - Follow-up va CRM yangilash
+kpis:
+  - Javob %
+  - Uchrashuv %
+tools:
+  - telegram_bot
+  - crm_api
+memory_file: memory/subagents/outreach_ru.md
+persona_ref: null
+delegation:
+  can_delegate_to:
+    - telegram_bot
+    - crm_api
+  escalates_to: leadgen_ru

@@ -1,8 +1,79 @@
 """
-Hierarchy — config/ dagi YAML fayllardan 6 darajali ierarxiyani yuklaydi (SKELET).
+Hierarchy — config/ dagi per-agent YAML fayllardan 6 darajali ierarxiyani yuklaydi.
 
-config/divisions.yaml ni o'qib, reports_to/manages bo'yicha daraxt quradi.
-TODO: yuklovchi va validatsiya (bir agent bir boshliqqa; sikl yo'qligi).
+Har agent .yaml (id, level 1-5) yuklanadi; L6 tools va divisions.yaml o'tkazib yuboriladi.
+reports_to/manages bo'yicha daraxt quriladi va validatsiya qilinadi (bitta ildiz, sikl yo'q,
+har agentning boshlig'i mavjud). Agentlar BaseAgent sifatida instansiyalanadi.
 """
+from __future__ import annotations
 
-# def load_hierarchy(config_dir: str) -> dict: ...
+from pathlib import Path
+
+import yaml
+
+from .base_agent import BaseAgent
+from .message_bus import MessageBus
+from .workflow import WorkflowManager
+
+CONFIG_DIR = Path(__file__).resolve().parents[2] / "config"
+SKIP = {"divisions", "L6_tools"}
+
+
+class Hierarchy:
+    def __init__(self, dry_run: bool = True, fail_ids: set[str] | None = None) -> None:
+        self.workflow = WorkflowManager()
+        self.bus = MessageBus()
+        self.configs: dict[str, dict] = {}
+        self.agents: dict[str, BaseAgent] = {}
+        self.root_id: str | None = None
+        self._load_configs()
+        self._instantiate(dry_run, fail_ids)
+        self.validate()
+
+    def _load_configs(self) -> None:
+        for path in sorted(CONFIG_DIR.rglob("*.yaml")):
+            if path.stem in SKIP:
+                continue
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
+            if not isinstance(data, dict) or "id" not in data or "level" not in data:
+                continue
+            self.configs[data["id"]] = data
+
+    def _instantiate(self, dry_run: bool, fail_ids: set[str] | None) -> None:
+        for aid, cfg in self.configs.items():
+            self.agents[aid] = BaseAgent(cfg, self, dry_run=dry_run, fail_ids=fail_ids)
+            if cfg.get("reports_to") in (None, "null"):
+                self.root_id = aid
+
+    def validate(self) -> None:
+        """Ierarxiya butunligini tekshiradi: ildiz bor, boshliqlar mavjud, sikl yo'q."""
+        if not self.root_id:
+            raise ValueError("Ildiz agent (reports_to: null) topilmadi")
+        for aid, cfg in self.configs.items():
+            boss = cfg.get("reports_to")
+            if boss and boss != "null" and boss not in self.configs:
+                raise ValueError(f"{aid}: boshliq '{boss}' mavjud emas")
+        # sikl tekshiruvi: har agentdan ildizga yo'l bo'lishi kerak
+        for aid in self.configs:
+            seen, cur = set(), aid
+            while cur and cur != "null":
+                if cur in seen:
+                    raise ValueError(f"Sikl aniqlandi: {aid} zanjirida")
+                seen.add(cur)
+                cur = self.configs.get(cur, {}).get("reports_to")
+
+    def tree_lines(self, aid: str | None = None, depth: int = 0) -> list[str]:
+        aid = aid or self.root_id
+        assert aid is not None
+        cfg = self.configs[aid]
+        out = [f"{'  ' * depth}L{cfg['level']} {aid}  ·  {cfg.get('role_uz', '')}"]
+        for m in cfg.get("manages") or []:
+            if m in self.configs:              # tool bo'lmasa
+                out += self.tree_lines(m, depth + 1)
+        return out
+
+    def stats(self) -> dict[str, int]:
+        levels: dict[int, int] = {}
+        for cfg in self.configs.values():
+            levels[cfg["level"]] = levels.get(cfg["level"], 0) + 1
+        return {f"L{k}": levels[k] for k in sorted(levels)}

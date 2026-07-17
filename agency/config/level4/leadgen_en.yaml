@@ -1,0 +1,28 @@
+# Sof Expo Agency — Lead Gen Ingliz/Xalqaro Agent (Level 4)
+id: leadgen_en
+level: 4
+role: "Lead Gen EN Agent"
+role_uz: "Lead Gen Ingliz/Xalqaro Agenti"
+model: claude-sonnet-5
+reports_to: head_leadgen
+manages:
+  - scraper_en
+  - outreach_en
+mission: >
+  xalqaro (EN) bozor uchun exponent lead voronkasini boshqaradi: topish -> boyitish -> outreach.
+responsibilities:
+  - Ingliz/Xalqaro manbalarini boshqarish
+  - Scraper/Outreach koordinatsiyasi (en)
+  - Voronka konversiyasi (en)
+kpis:
+  - Yangi lead/hafta (en)
+  - Lead sifati (score)
+  - Lead -> uchrashuv %
+tools: []
+memory_file: memory/workers/leadgen_en.md
+persona_ref: null
+delegation:
+  can_delegate_to:
+    - scraper_en
+    - outreach_en
+  escalates_to: head_leadgen

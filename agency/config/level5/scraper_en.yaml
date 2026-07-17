@@ -1,0 +1,27 @@
+# Sof Expo Agency — Scraper Ingliz/Xalqaro (Level 5)
+id: scraper_en
+level: 5
+role: "Scraper EN"
+role_uz: "Skraper (Ingliz/Xalqaro)"
+model: claude-haiku-4-5
+reports_to: leadgen_en
+manages:
+  - apify
+mission: >
+  xalqaro (EN) bozor manbalaridan (web/IG/Alibaba) strukturalangan lead ma'lumot yig'adi.
+responsibilities:
+  - Ma'lumot yig'ish (en)
+  - Tozalash va normalizatsiya
+  - CRM'ga uzatish
+kpis:
+  - Yig'ilgan yozuv/hafta
+  - Aniqlik %
+tools:
+  - apify
+  - crm_api
+memory_file: memory/subagents/scraper_en.md
+persona_ref: null
+delegation:
+  can_delegate_to:
+    - apify
+  escalates_to: leadgen_en

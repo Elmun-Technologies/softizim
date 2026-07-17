@@ -1,0 +1,29 @@
+# Sof Expo Agency — Outreach Ingliz/Xalqaro (Level 5)
+id: outreach_en
+level: 5
+role: "Outreach EN"
+role_uz: "Outreach (Ingliz/Xalqaro)"
+model: claude-sonnet-5
+reports_to: leadgen_en
+manages:
+  - telegram_bot
+  - crm_api
+mission: >
+  xalqaro (EN) bozor kompaniyalariga en tilida shaxsiy taklif yozadi/yuboradi, javoblarni kuzatadi.
+responsibilities:
+  - Shaxsiy xat (en tilida)
+  - Yuborish (telegram/email)
+  - Follow-up va CRM yangilash
+kpis:
+  - Javob %
+  - Uchrashuv %
+tools:
+  - telegram_bot
+  - crm_api
+memory_file: memory/subagents/outreach_en.md
+persona_ref: null
+delegation:
+  can_delegate_to:
+    - telegram_bot
+    - crm_api
+  escalates_to: leadgen_en

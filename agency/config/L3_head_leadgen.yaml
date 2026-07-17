@@ -6,23 +6,26 @@ role_uz: "Lead Generatsiya Boshlig'i"
 model: claude-opus-4-8
 reports_to: pm
 manages:
-  - lead_researcher
+  - leadgen_ru
+  - leadgen_en
+  - leadgen_zh
 mission: >
-  Potentsial exponentlarni topish, boyitish va outreach voronkasini boshqaradi.
+  Til bo'yicha (RU/EN/ZH) lead generatsiya bo'limlarini boshqaradi, umumiy voronka konversiyasini nazorat qiladi.
 responsibilities:
-  - Lead manbalarini boshqarish
-  - Scraper/Outreach koordinatsiyasi
-  - Voronka konversiyasi
+  - RU/EN/ZH lead bo'limlarini koordinatsiya
+  - Lead manbalari strategiyasi
+  - Voronka konversiyasi (umumiy)
 kpis:
-  - Yangi lead/hafta
+  - Yangi lead/hafta (umumiy)
   - Lead sifati (score)
-  - Lead→uchrashuv %
+  - Lead -> uchrashuv %
 tools:
   - crm_api
 memory_file: memory/heads/head_leadgen.md
-persona_ref: null   # ixtiyoriy: agency-agents .md persona havolasi
-# --- muloqot ---
+persona_ref: null
 delegation:
   can_delegate_to:
-    - lead_researcher
+    - leadgen_ru
+    - leadgen_en
+    - leadgen_zh
   escalates_to: pm

@@ -1,0 +1,27 @@
+# Sof Expo Agency — Scraper Xitoy (Level 5)
+id: scraper_zh
+level: 5
+role: "Scraper ZH"
+role_uz: "Skraper (Xitoy)"
+model: claude-haiku-4-5
+reports_to: leadgen_zh
+manages:
+  - apify
+mission: >
+  Xitoy bozori (Alibaba/Made-in-China) manbalaridan (web/IG/Alibaba) strukturalangan lead ma'lumot yig'adi.
+responsibilities:
+  - Ma'lumot yig'ish (zh)
+  - Tozalash va normalizatsiya
+  - CRM'ga uzatish
+kpis:
+  - Yig'ilgan yozuv/hafta
+  - Aniqlik %
+tools:
+  - apify
+  - crm_api
+memory_file: memory/subagents/scraper_zh.md
+persona_ref: null
+delegation:
+  can_delegate_to:
+    - apify
+  escalates_to: leadgen_zh

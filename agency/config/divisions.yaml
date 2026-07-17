@@ -21,7 +21,7 @@ hierarchy:
 
   level3:  # Bo'lim boshliqlari
     - { id: head_smm,     role_uz: "SMM Boshlig'i",       reports_to: pm, manages: [insta_worker, audience_ru, audience_en, audience_zh] }
-    - { id: head_leadgen, role_uz: "Lead Gen Boshlig'i",  reports_to: pm, manages: [lead_researcher] }
+    - { id: head_leadgen, role_uz: "Lead Gen Boshlig'i",  reports_to: pm, manages: [leadgen_ru, leadgen_en, leadgen_zh] }
     - { id: head_content, role_uz: "Kontent Boshlig'i",   reports_to: pm, manages: [blog_post] }
     - { id: head_traffic, role_uz: "Trafik Boshlig'i",    reports_to: pm, manages: [targetolog] }
     - { id: head_tech,    role_uz: "Texnik Boshliq",      reports_to: pm, manages: [web_manager] }
@@ -34,14 +34,20 @@ hierarchy:
     - { id: targetolog,      role_uz: "Targetolog",               reports_to: head_traffic, manages: [] }
     - { id: web_manager,     role_uz: "Veb Menejer",              reports_to: head_tech,    manages: [] }
     - { id: blog_post,       role_uz: "Blog Muallifi",            reports_to: head_content, manages: [] }
-    - { id: lead_researcher, role_uz: "Lead Tadqiqotchi",         reports_to: head_leadgen, manages: [scraper, outreach] }
+    - { id: leadgen_ru,      role_uz: "Lead Gen RU Agenti",       reports_to: head_leadgen, manages: [scraper_ru, outreach_ru] }
+    - { id: leadgen_en,      role_uz: "Lead Gen EN Agenti",       reports_to: head_leadgen, manages: [scraper_en, outreach_en] }
+    - { id: leadgen_zh,      role_uz: "Lead Gen ZH Agenti",       reports_to: head_leadgen, manages: [scraper_zh, outreach_zh] }
 
   level5:  # Sub-agentlar
-    - { id: caption_writer,  role_uz: "Sarlavha/Matn Yozuvchi", reports_to: insta_worker,    manages: [] }
-    - { id: visual_designer, role_uz: "Vizual Dizayner",        reports_to: insta_worker,    manages: [midjourney] }
-    - { id: trend_auditor,   role_uz: "Trend Auditori",         reports_to: insta_worker,    manages: [] }
-    - { id: scraper,         role_uz: "Skraper",                reports_to: lead_researcher, manages: [apify] }
-    - { id: outreach,        role_uz: "Outreach",               reports_to: lead_researcher, manages: [telegram_bot, crm_api] }
+    - { id: caption_writer,  role_uz: "Sarlavha/Matn Yozuvchi", reports_to: insta_worker, manages: [] }
+    - { id: visual_designer, role_uz: "Vizual Dizayner",        reports_to: insta_worker, manages: [midjourney] }
+    - { id: trend_auditor,   role_uz: "Trend Auditori",         reports_to: insta_worker, manages: [] }
+    - { id: scraper_ru,      role_uz: "Skraper (RU)",           reports_to: leadgen_ru,   manages: [apify] }
+    - { id: outreach_ru,     role_uz: "Outreach (RU)",          reports_to: leadgen_ru,   manages: [telegram_bot, crm_api] }
+    - { id: scraper_en,      role_uz: "Skraper (EN)",           reports_to: leadgen_en,   manages: [apify] }
+    - { id: outreach_en,     role_uz: "Outreach (EN)",          reports_to: leadgen_en,   manages: [telegram_bot, crm_api] }
+    - { id: scraper_zh,      role_uz: "Skraper (ZH)",           reports_to: leadgen_zh,   manages: [apify] }
+    - { id: outreach_zh,     role_uz: "Outreach (ZH)",          reports_to: leadgen_zh,   manages: [telegram_bot, crm_api] }
 
   level6:  # Tools (integratsiyalar — batafsil: config/L6_tools.yaml)
     - { id: midjourney,   type: tool }

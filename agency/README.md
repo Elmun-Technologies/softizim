@@ -92,7 +92,7 @@ delegation:
 
 ## Aloqadorlik
 
-- CRM (`crm_api`) — `../system/db/migrations` dagi Supabase sxema bilan bir xil (umumiy baza).
+- CRM (`crm_api`) — `db/migrations` dagi Supabase sxema (lead/deal/kontent bazasi).
 - Strategiya asosi — `../docs/` (pozitsiya, byudjet, jalb playbook).
 
 ## Keyingi bosqich (tasdiqdan keyin)

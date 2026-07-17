@@ -1,0 +1,28 @@
+# Sof Expo Agency — Lead Gen Rus/Qozog'iston Agent (Level 4)
+id: leadgen_ru
+level: 4
+role: "Lead Gen RU Agent"
+role_uz: "Lead Gen Rus/Qozog'iston Agenti"
+model: claude-sonnet-5
+reports_to: head_leadgen
+manages:
+  - scraper_ru
+  - outreach_ru
+mission: >
+  Rossiya va Qozog'iston bozori uchun exponent lead voronkasini boshqaradi: topish -> boyitish -> outreach.
+responsibilities:
+  - Rus/Qozog'iston manbalarini boshqarish
+  - Scraper/Outreach koordinatsiyasi (ru)
+  - Voronka konversiyasi (ru)
+kpis:
+  - Yangi lead/hafta (ru)
+  - Lead sifati (score)
+  - Lead -> uchrashuv %
+tools: []
+memory_file: memory/workers/leadgen_ru.md
+persona_ref: null
+delegation:
+  can_delegate_to:
+    - scraper_ru
+    - outreach_ru
+  escalates_to: head_leadgen

@@ -1,0 +1,28 @@
+# Sof Expo Agency — Lead Gen Xitoy Agent (Level 4)
+id: leadgen_zh
+level: 4
+role: "Lead Gen ZH Agent"
+role_uz: "Lead Gen Xitoy Agenti"
+model: claude-sonnet-5
+reports_to: head_leadgen
+manages:
+  - scraper_zh
+  - outreach_zh
+mission: >
+  Xitoy bozori (Alibaba/Made-in-China) uchun exponent lead voronkasini boshqaradi: topish -> boyitish -> outreach.
+responsibilities:
+  - Xitoy manbalarini boshqarish
+  - Scraper/Outreach koordinatsiyasi (zh)
+  - Voronka konversiyasi (zh)
+kpis:
+  - Yangi lead/hafta (zh)
+  - Lead sifati (score)
+  - Lead -> uchrashuv %
+tools: []
+memory_file: memory/workers/leadgen_zh.md
+persona_ref: null
+delegation:
+  can_delegate_to:
+    - scraper_zh
+    - outreach_zh
+  escalates_to: head_leadgen

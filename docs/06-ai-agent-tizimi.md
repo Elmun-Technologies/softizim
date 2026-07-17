@@ -52,18 +52,20 @@ Kerakli jadvallar (keyingi bosqichda migratsiya bilan yaratiladi):
 
 ## Real kod (implementatsiya)
 
-Bu arxitektura `../system/` papkasida **ishlaydigan kod** sifatida qurilgan:
-TypeScript + Claude (`claude-opus-4-8`/`claude-haiku-4-5`) + Supabase. Ishga tushirish:
-`cd system && npm install && npm run cycle`. Batafsil: [`../system/README.md`](../system/README.md).
+Bu arxitektura **Python** 6 darajali ierarxik tizim sifatida `../agency/` papkasida qurilgan
+(`agency-agents` karkasi + YAML config + Hermes xotira). Batafsil: [`../agency/README.md`](../agency/README.md).
+CRM sxemasi: `../agency/db/migrations`.
+
+> Eslatma: dastlabki TypeScript prototip (`system/`) Python karkasiga birlashtirildi va olib tashlandi.
 
 ## Bosqichma-bosqich yo'l xaritasi
 
 - **Faza 0:** ✅ Bilim bazasi saralandi (bu repo).
-- **Faza 1:** ✅ Supabase CRM sxemasi (`system/db/migrations`) + 8 agent + orkestrator qurildi.
-  Qoldi: mavjud exponent bazasini import, Supabase loyihasini ulash.
-- **Faza 2:** Content Studio + Outreach agentlari — 1 ta tadbir (Build Pro Expo, oktabr) pilot.
-- **Faza 3:** Ad Manager (Meta Ads) + Analytics — CPL va konversiyani real o'lchash.
-- **Faza 4:** To'liq konveyer — 5 tadbirga kengaytirish, xalqaro segment (`03`).
+- **Faza 1:** ✅ 6 darajali agent arxitekturasi (`agency/`) — config, Hermes xotira, skelet.
+- **Faza 2:** ✅ `base_agent` + `message_bus` + WorkflowManager (holat validatsiyasi/eskalatsiya) +
+  CMO→PM→Head delegatsiya oqimi.
+- **Faza 3:** Bo'lim boshliqlari → ishchilar → sub-agentlar delegatsiyasini to'liq ishga tushirish.
+- **Faza 4:** Tools (Midjourney/Apify/Telegram/CRM/Meta Ads) real API'larga ulash.
 
 ## Ochiq savollar (tasdiqlash kerak)
 
