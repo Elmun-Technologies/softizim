@@ -1,0 +1,26 @@
+# Sof Expo Agency — Targetolog (Level 4)
+id: targetolog
+level: 4
+role: "Targetolog"
+role_uz: "Targetolog"
+model: claude-sonnet-5
+reports_to: head_traffic
+manages: []
+mission: >
+  Meta/Google reklama kampaniyalarini sozlaydi, auditoriya va kreativ testlaydi.
+responsibilities:
+  - Kampaniya sozlash
+  - A/B test
+  - CPL optimizatsiya
+kpis:
+  - CPL
+  - CTR
+  - ROAS
+tools:
+  - meta_ads
+memory_file: memory/workers/targetolog.md
+persona_ref: null   # ixtiyoriy: agency-agents .md persona havolasi
+# --- muloqot ---
+delegation:
+  can_delegate_to: []
+  escalates_to: head_traffic

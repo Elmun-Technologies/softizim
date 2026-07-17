@@ -1,0 +1,30 @@
+# Sof Expo Agency — Lead Tadqiqotchi (Level 4)
+id: lead_researcher
+level: 4
+role: "Lead Researcher"
+role_uz: "Lead Tadqiqotchi"
+model: claude-sonnet-5
+reports_to: head_leadgen
+manages:
+  - scraper
+  - outreach
+mission: >
+  Manbalardan (Alibaba, raqib Expo, bojxona) exponent nomzodlarini yig'adi va saralaydi.
+responsibilities:
+  - Nomzod yig'ish
+  - Segmentatsiya
+  - Outreach uchun tayyorlash
+kpis:
+  - Nomzod/hafta
+  - Sifat
+tools:
+  - apify
+  - crm_api
+memory_file: memory/workers/lead_researcher.md
+persona_ref: null   # ixtiyoriy: agency-agents .md persona havolasi
+# --- muloqot ---
+delegation:
+  can_delegate_to:
+    - scraper
+    - outreach
+  escalates_to: head_leadgen

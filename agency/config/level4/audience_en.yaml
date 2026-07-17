@@ -1,0 +1,24 @@
+# Sof Expo Agency — Ingliz auditoriyasi (Level 4)
+id: audience_en
+level: 4
+role: "Audience EN"
+role_uz: "Ingliz auditoriyasi"
+model: claude-sonnet-5
+reports_to: head_smm
+manages: []
+mission: >
+  Ingliz tilidagi xalqaro auditoriya uchun kontent moslaydi.
+responsibilities:
+  - EN kontent moslash
+  - EN trend
+  - Xalqaro ohang
+kpis:
+  - EN reach
+  - EN ER
+tools: []
+memory_file: memory/workers/audience_en.md
+persona_ref: null   # ixtiyoriy: agency-agents .md persona havolasi
+# --- muloqot ---
+delegation:
+  can_delegate_to: []
+  escalates_to: head_smm

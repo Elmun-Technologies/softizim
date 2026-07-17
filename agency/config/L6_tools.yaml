@@ -1,0 +1,33 @@
+# Sof Expo Agency — Level 6: Tools (integratsiyalar, agent emas)
+# Har tool env kalit orqali ulanadi. Kalitlar .env da (repoga tushmaydi).
+
+tools:
+  midjourney:
+    name: "Midjourney API"
+    purpose: "Vizual/render generatsiya (Visual Designer ishlatadi)"
+    env_key: MIDJOURNEY_API_KEY
+    used_by: [visual_designer]
+
+  apify:
+    name: "Apify"
+    purpose: "Web/Instagram/Alibaba scraping (Scraper, Trend Auditor)"
+    env_key: APIFY_TOKEN
+    used_by: [scraper, trend_auditor, lead_researcher]
+
+  telegram_bot:
+    name: "Telegram Bot API"
+    purpose: "Outreach yuborish va ichki bildirishnoma"
+    env_key: TELEGRAM_BOT_TOKEN
+    used_by: [outreach, head_smm]
+
+  crm_api:
+    name: "CRM API (Supabase)"
+    purpose: "Lead/deal/kontent bazasi — ../system CRM bilan bir xil sxema"
+    env_key: SUPABASE_SERVICE_ROLE_KEY
+    used_by: [pm, head_leadgen, head_tech, web_manager, lead_researcher, scraper, outreach]
+
+  meta_ads:
+    name: "Meta Ads API"
+    purpose: "Qozog'iston reklama kampaniyalari (Xitoyda bloklangan)"
+    env_key: META_ADS_ACCOUNT_ID
+    used_by: [head_traffic, targetolog]

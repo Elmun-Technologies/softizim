@@ -1,0 +1,23 @@
+# Sof Expo Agency — Xitoy auditoriyasi (Level 4)
+id: audience_zh
+level: 4
+role: "Audience ZH"
+role_uz: "Xitoy auditoriyasi"
+model: claude-sonnet-5
+reports_to: head_smm
+manages: []
+mission: >
+  Xitoy tilidagi auditoriya uchun kontent (Meta bloklangani uchun outreach yo'nalishi).
+responsibilities:
+  - ZH kontent moslash
+  - ZH platforma xususiyati
+  - ZH ohang
+kpis:
+  - ZH erishish
+tools: []
+memory_file: memory/workers/audience_zh.md
+persona_ref: null   # ixtiyoriy: agency-agents .md persona havolasi
+# --- muloqot ---
+delegation:
+  can_delegate_to: []
+  escalates_to: head_smm
