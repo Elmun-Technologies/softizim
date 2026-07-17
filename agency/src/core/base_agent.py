@@ -117,11 +117,13 @@ class BaseAgent:
     # --- bitta bo'ysunuvchiga delegatsiya + qat'iy tasdiqlash ---
     def _delegate(self, parent: Task, sub: "BaseAgent") -> Result:
         wf, bus = self.h.workflow, self.h.bus
+        # DEKOMPOZITSIYA: umumiy brifni bo'ysunuvchi uchun ixtisoslashgan sub-vazifaga bo'lish
+        title, payload = self.decompose(parent, sub)
         subtask = wf.create(
-            title=f"{sub.role}: {parent.title}",
+            title=title,
             assigner=self.id, assignee=sub.id,
-            payload=parent.payload,
-            acceptance=[f"{sub.role} natijasi bo'sh emas va mezonga mos"],
+            payload=payload,
+            acceptance=[f"{sub.role} o'z yo'nalishi bo'yicha aniq natija berdi"],
             parent_id=parent.id,
         )
         bus.send(Message(MsgType.ASSIGN, self.id, sub.id, subtask.id, subtask.title))
@@ -157,6 +159,8 @@ class BaseAgent:
         wf.transition(subtask, TaskState.ESCALATED, reason)
         boss = self.reports_to or "ROOT"
         bus.send(Message(MsgType.ESCALATION, self.id, boss, subtask.id, reason))
+        # Telegram: eskalatsiya signali (xato bildirishnomasi)
+        self.h.notify(f"⚠️ ESKALATSIYA: {self.id} → {boss}\nVazifa: {subtask.title}\nSabab: {reason}", kind="alert")
         return Result(False, f"ESKALATSIYA [{sub.id}]: {reason}", "escalated")
 
     # --- QAT'IY TASDIQLASH (State Validation) ---
@@ -169,6 +173,34 @@ class BaseAgent:
             return False, res.output[5:].strip() or "sifat mezoniga mos emas"
         # (Real rejimda: shu yerda LLM-sudya orqali acceptance mezonlarini tekshirish mumkin)
         return True, "ok"
+
+    # --- DEKOMPOZITSIYA: umumiy brif → bo'ysunuvchi uchun ixtisoslashgan sub-vazifa ---
+    def decompose(self, parent: Task, sub: "BaseAgent") -> tuple[str, str]:
+        """Boshliq umumiy brifni bo'ysunuvchining yo'nalishiga qarab bo'lib beradi.
+
+        Dry-run: qoidaga asoslangan (sub missiya/mas'uliyatidan). Real: boshliq LLM
+        orqali faqat o'sha bo'ysunuvchiga tegishli sub-vazifani generatsiya qiladi.
+        """
+        sub_resp = ", ".join(sub.cfg.get("responsibilities") or []) or sub.mission
+        title = f"[{sub.role}] {parent.title}"
+
+        if self.dry_run or not self._has_key():
+            payload = (
+                f"UMUMIY BRIF: {parent.payload or parent.title}\n"
+                f"SENING YO'NALISHING ({sub.role}): {sub.mission}\n"
+                f"FAQAT SHU FOKUS BO'YICHA BAJAR: {sub_resp}"
+            )
+            return title, payload
+
+        # Real rejim — boshliq brifni bo'ysunuvchi uchun ixtisoslashtiradi
+        user = (
+            f"Umumiy brif: {parent.title}\n{parent.payload}\n\n"
+            f"Buni FAQAT '{sub.role}' bo'ysunuvching uchun ixtisoslashgan, aniq sub-vazifaga "
+            f"aylantir. Uning mas'uliyati: {sub_resp}. Boshqa bo'limlar ishini kiritma. "
+            f"Qisqa topshiriq (o'zbekcha, 2-4 gap)."
+        )
+        payload = LLMClient().complete(self.build_system_prompt(), user, self.model, max_tokens=600)
+        return title, payload or f"{sub.role} uchun: {parent.title}"
 
     # --- menejer natijalarni yig'adi ---
     def synthesize(self, task: Task, child_results: dict[str, str]) -> str:

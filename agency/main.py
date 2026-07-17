@@ -50,6 +50,12 @@ def main() -> None:
     print("\n--- VAZIFA HOLATLARI (WorkflowManager audit) ---")
     print("\n".join(h.workflow.audit()))
 
+    # Telegram: yakuniy tasdiq yoki xato signali
+    if result.ok:
+        h.notify(f"'{goal.title}' — barcha bo'limlar rejani topshirdi.", kind="approval")
+    else:
+        h.notify(f"'{goal.title}' — YAKUNIY ESKALATSIYA. {result.output}", kind="alert")
+
     print("\n--- YAKUNIY NATIJA (CMO) ---")
     print(f"Muvaffaqiyat: {result.ok}  ({result.note})")
     print(result.output)

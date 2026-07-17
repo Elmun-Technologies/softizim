@@ -3,6 +3,8 @@ CRM API (Supabase) — lead/deal bazasi (Level 6). Sxema: agency/db/migrations.
 
 env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 Kalit yo'q bo'lsa — stub: xotiradagi ro'yxatga yozadi (voronka sinovi uchun).
+
+Jadvallar: companies (name+country unique), contacts (company_id FK).
 """
 from __future__ import annotations
 
@@ -16,26 +18,54 @@ class CRMClient(BaseTool):
     env_key = "SUPABASE_SERVICE_ROLE_KEY"
 
     def __init__(self) -> None:
-        self._mem: list[dict] = []   # stub rejim uchun xotira
+        self._companies: list[dict] = []   # stub rejim
+        self._contacts: list[dict] = []
 
     def available(self) -> bool:
         return bool(os.getenv("SUPABASE_URL") and os.getenv("SUPABASE_SERVICE_ROLE_KEY"))
 
-    # --- lead yozish ---
+    # --- ulanish tekshiruvi ---
+    def ping(self) -> dict:
+        if not self.available():
+            return {"mode": "stub", "ok": True, "note": "kalitsiz — xotira rejimi"}
+        res = self._rest("GET", "companies?select=id&limit=1")
+        ok = isinstance(res, list)
+        return {"mode": "live", "ok": ok, "detail": res if not ok else "ulandi"}
+
+    # --- bitta kompaniya (companies) ---
     def upsert_company(self, company: dict) -> dict:
         if not self.available():
-            self._mem.append(company)
-            return {"mode": "stub", "stored": len(self._mem), "company": company.get("name")}
-        return self._rest("POST", "companies", company)
+            self._companies.append(company)
+            return {"mode": "stub", "stored": len(self._companies), "company": company.get("name")}
+        return self._rest("POST", "companies?on_conflict=name,country", company)
+
+    # --- ko'p lead (batch) ---
+    def save_leads(self, leads: list[dict]) -> dict:
+        if not self.available():
+            self._companies.extend(leads)
+            return {"mode": "stub", "saved": len(leads), "total": len(self._companies)}
+        res = self._rest("POST", "companies?on_conflict=name,country", leads)
+        n = len(res) if isinstance(res, list) else 0
+        return {"mode": "live", "saved": n, "detail": res if not n else "ok"}
+
+    # --- kontakt (contacts) ---
+    def add_contact(self, company_id: str, contact: dict) -> dict:
+        row = {"company_id": company_id, **contact}
+        if not self.available():
+            self._contacts.append(row)
+            return {"mode": "stub", "stored": len(self._contacts)}
+        return self._rest("POST", "contacts", row)
 
     # --- lead o'qish ---
     def list_companies(self, status: str | None = None) -> list[dict]:
         if not self.available():
-            return [c for c in self._mem if not status or c.get("status") == status]
-        path = "companies" + (f"?status=eq.{status}" if status else "")
-        return self._rest("GET", path)
+            return [c for c in self._companies if not status or c.get("status") == status]
+        path = "companies?select=*" + (f"&status=eq.{status}" if status else "")
+        res = self._rest("GET", path)
+        return res if isinstance(res, list) else []
 
-    def _rest(self, method: str, path: str, body: dict | None = None):
+    # --- REST yordamchi ---
+    def _rest(self, method: str, path: str, body=None):
         import httpx
         base = os.environ["SUPABASE_URL"].rstrip("/")
         key = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
@@ -45,10 +75,9 @@ class CRMClient(BaseTool):
             "Content-Type": "application/json",
             "Prefer": "resolution=merge-duplicates,return=representation",
         }
-        url = f"{base}/rest/v1/{path}"
         try:
-            r = httpx.request(method, url, headers=headers, json=body, timeout=30)
+            r = httpx.request(method, f"{base}/rest/v1/{path}", headers=headers, json=body, timeout=30)
             r.raise_for_status()
-            return r.json()
+            return r.json() if r.content else []
         except Exception as e:
             return {"error": str(e), "path": path}

@@ -79,3 +79,11 @@ class Hierarchy:
         for cfg in self.configs.values():
             levels[cfg["level"]] = levels.get(cfg["level"], 0) + 1
         return {f"L{k}": levels[k] for k in sorted(levels)}
+
+    # --- Telegram bildirishnoma (xato / eskalatsiya / yakuniy tasdiq) ---
+    def notify(self, text: str, kind: str = "info") -> dict:
+        prefix = {"alert": "🚨", "approval": "✅", "info": "ℹ️"}.get(kind, "ℹ️")
+        tg = self.tools.get("telegram_bot")
+        if tg is None:
+            return {"sent": False, "reason": "telegram_bot yo'q"}
+        return tg.notify(f"{prefix} {text}")
