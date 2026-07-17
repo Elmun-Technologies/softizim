@@ -4,8 +4,9 @@
 runtime ierarxiyasi + YAML config + Hermes xotira** bilan kengaytirgan tizim. Yiliga 10 ta
 xalqaro Expo marketingini boshqarish uchun.
 
-> **Holat:** ARXITEKTURA SKELETI. Python fayllari hozircha bo'sh (docstring + TODO) — kod
-> keyingi bosqichda yoziladi. YAML config va Hermes xotira shablonlari to'ldirilgan.
+> **Holat:** ISHLAYDIGAN YADRO. Delegatsiya (CMO→PM→Head→Worker→Sub), qat'iy tasdiqlash
+> (WorkflowManager), eskalatsiya, LLM (Anthropic/OpenRouter), Hermes xotira va Tools (Apify/
+> Telegram/CRM) ulangan. Sinov: `python3 main.py` va `python3 demo_integration.py`.
 
 ---
 
@@ -95,7 +96,34 @@ delegation:
 - CRM (`crm_api`) — `db/migrations` dagi Supabase sxema (lead/deal/kontent bazasi).
 - Strategiya asosi — `../docs/` (pozitsiya, byudjet, jalb playbook).
 
-## Keyingi bosqich (tasdiqdan keyin)
+## Ishga tushirish
 
-`src/core/base_agent.py` va `message_bus.py` ni yozish → CMO→PM→Head delegatsiya oqimini
-ishga tushirish → tools'ni real API'larga ulash.
+```bash
+cd agency
+pip install -r requirements.txt
+cp .env.example .env          # kalitlarni to'ldiring (ixtiyoriy — stub'siz dry-run ishlaydi)
+
+python3 main.py               # CMO→PM→Head delegatsiya oqimi (dry-run)
+FAIL_IDS=targetolog python3 main.py   # eskalatsiya demosi
+python3 demo_integration.py   # LLM + Tools + Hermes xotira integratsiyasi
+
+# Real Claude bilan:
+DRY_RUN=0 ANTHROPIC_API_KEY=... python3 main.py
+# yoki OpenRouter:
+DRY_RUN=0 LLM_PROVIDER=openrouter OPENROUTER_API_KEY=... python3 main.py
+```
+
+## Ishlaydigan qismlar
+
+- **LLM (`src/core/llm.py`):** Anthropic (SDK) yoki OpenRouter. Har agent `build_system_prompt()`
+  orqali o'z personasi (rol/missiya/KPI) + `MEMORY.md` bilan fikrlaydi. Rad etishda oldingi
+  izoh (feedback) LLM'ga uzatiladi.
+- **Hermes xotira:** rad etilganda/eskalatsiyada quyi agent xatosini va darsini `MEMORY.md`
+  ning `Lessons Learned` bo'limiga **append-only** (sana bilan) yozadi. `MEMORY_WRITE=0` — o'chirish.
+- **Tools (`src/tools/`):** `ApifyScraper` (lead scraping), `TelegramBot` (CMO/PM bildirishnoma),
+  `CRMClient` (Supabase lead/deal), `MetaAds`, `Midjourney`. Kalit yo'q → xavfsiz **stub** rejim.
+
+## Keyingi bosqich
+
+Bo'lim boshliqlari uchun vazifa-bo'lish mantig'ini nozik sozlash · Tools'ni real
+kalitlar bilan ishga ulash · outreach/kontent voronkasini CRM bilan uchdan-uchiga bog'lash.

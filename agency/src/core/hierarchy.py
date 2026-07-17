@@ -11,6 +11,7 @@ from pathlib import Path
 
 import yaml
 
+from ..tools import TOOL_CLASSES
 from .base_agent import BaseAgent
 from .message_bus import MessageBus
 from .workflow import WorkflowManager
@@ -25,6 +26,7 @@ class Hierarchy:
         self.bus = MessageBus()
         self.configs: dict[str, dict] = {}
         self.agents: dict[str, BaseAgent] = {}
+        self.tools = {tid: cls() for tid, cls in TOOL_CLASSES.items()}  # Level 6
         self.root_id: str | None = None
         self._load_configs()
         self._instantiate(dry_run, fail_ids)

@@ -52,6 +52,7 @@ class Task:
     parent_id: str | None = None
     state: TaskState = TaskState.CREATED
     result: str | None = None
+    feedback: str = ""                  # rad etilganda boshliqdan izoh (pastga)
     attempts: int = 0
     history: list[tuple[str, str]] = field(default_factory=list)  # (holat, izoh)
 
