@@ -54,7 +54,7 @@ Kerakli jadvallar (keyingi bosqichda migratsiya bilan yaratiladi):
 
 Bu arxitektura **Python** 6 darajali ierarxik tizim sifatida `../agency/` papkasida qurilgan
 (`agency-agents` karkasi + YAML config + Hermes xotira). Batafsil: [`../agency/README.md`](../agency/README.md).
-CRM sxemasi: `../agency/db/migrations`.
+CRM sxemasi: `../agency/db/migration.sql`.
 
 > Eslatma: dastlabki TypeScript prototip (`system/`) Python karkasiga birlashtirildi va olib tashlandi.
 

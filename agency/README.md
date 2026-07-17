@@ -17,12 +17,12 @@ L1  CMO ────────────────────────
 L2  └─ PM ──────────────────────────────── Loyiha Menejeri (operatsion)
 L3     ├─ Head of SMM ─ Head of Lead Gen ─ Head of Content ─ Head of Traffic ─ Head of Tech
 L4     │   ├─ Insta Worker (x10), Audience RU/EN/ZH   (SMM ostida)
-L4     │   ├─ Lead Researcher                          (Lead Gen ostida)
+L4     │   ├─ Lead Gen RU / EN / ZH Agent              (Lead Gen ostida)
 L4     │   ├─ Blog Post                                (Content ostida)
 L4     │   ├─ Targetolog                               (Traffic ostida)
 L4     │   └─ Web Manager                              (Tech ostida)
 L5     │       ├─ Caption Writer, Visual Designer, Trend Auditor  (Insta Worker ostida)
-L5     │       └─ Scraper, Outreach                               (Lead Researcher ostida)
+L5     │       └─ Scraper + Outreach (RU/EN/ZH)                   (har Lead Gen agenti ostida)
 L6     └─ Tools: Midjourney · Apify · Telegram Bot · CRM (Supabase) · Meta Ads
 ```
 
@@ -93,7 +93,7 @@ delegation:
 
 ## Aloqadorlik
 
-- CRM (`crm_api`) — `db/migrations` dagi Supabase sxema (lead/deal/kontent bazasi).
+- CRM (`crm_api`) — `db/migration.sql` dagi Supabase sxema (lead/deal/kontent bazasi).
 - Strategiya asosi — `../docs/` (pozitsiya, byudjet, jalb playbook).
 
 ## Ishga tushirish

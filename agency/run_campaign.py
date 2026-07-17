@@ -60,12 +60,12 @@ def main() -> None:
     result = h.notify_wrap(cmo, goal)
 
     # 2) Natijalar hisoboti
-    bar("2) LEAD VORONKASI (Apify B2B → Supabase CRM)")
+    bar("2) LEAD VORONKASI (Apify B2B → Supabase `leads`)")
     crm = h.tools["crm_api"]
-    companies = crm.list_companies()
+    leads = crm.list_leads()
     print(f"CRM ulanishi: {crm.ping()}")
-    print(f"Yig'ilgan B2B lead (KZ+CN+global): {len(companies)} kompaniya")
-    for c in companies[:6]:
+    print(f"Yig'ilgan B2B lead (KZ+CN+global): {len(leads)} kompaniya")
+    for c in leads[:6]:
         print(f"  · {c.get('name')} [{c.get('country')}] {c.get('email','')} {c.get('instagram','')}")
 
     bar("3) SIGNALLAR VA AUDIT — Supabase loglariga yozish")
@@ -75,13 +75,13 @@ def main() -> None:
     print(f"Xabarlar (MessageBus): {kinds}")
     print(f"Vazifalar (WorkflowManager): {len(h.workflow.tasks)}")
 
-    # Loglarni DB'ga yozish (jonli bo'lsa agent_messages / task_states jadvallariga)
+    # Loglarni DB'ga yozish (jonli bo'lsa campaign_logs / tasks jadvallariga)
     msgs = [{"kind": m.kind.value, "frm": m.frm, "to_agent": m.to, "task_id": m.task_id, "note": m.note}
             for m in h.bus.trace]
     states = [{"task_id": t.id, "assigner": t.assigner, "assignee": t.assignee,
                "title": t.title, "state": t.state.value} for t in h.workflow.tasks.values()]
-    print(f"  agent_messages: {crm.insert('agent_messages', msgs)}")
-    print(f"  task_states:    {crm.insert('task_states', states)}")
+    print(f"  campaign_logs: {crm.insert('campaign_logs', msgs)}")
+    print(f"  tasks:         {crm.insert('tasks', states)}")
 
     bar("4) YAKUNIY NATIJA (CMO)")
     print(f"Muvaffaqiyat: {result.ok}  ({result.note})")

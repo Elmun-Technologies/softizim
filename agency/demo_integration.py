@@ -45,7 +45,7 @@ def demo_tools(h: Hierarchy) -> None:
     print(f"  Apify {apify.mode}: {len(leads)} B2B kompaniya topildi (kontakt bilan)")
     print(f"    namuna: {leads[0]['name']} · {leads[0]['email']} · {leads[0]['instagram']}")
     saved = crm.save_leads(leads)
-    print(f"  CRM {crm.mode}: {saved}")
+    print(f"  CRM {crm.mode}: {saved} · jami leads: {len(crm.list_leads())}")
     r = tg.approval(f"Build Pro Expo: {len(leads)} yangi B2B lead (CN) CRM'ga yozildi.")
     print(f"  Telegram {tg.mode}: sent={r.get('sent')}")
 
