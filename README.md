@@ -33,17 +33,32 @@ AI-agentlar orqali avtomatlashtirilgan holda — qurish uchun bilim bazasi va (k
 | [`docs/05-brand-strategiya.md`](docs/05-brand-strategiya.md) | Brend: 9 qadam, pozitsiya, vizual, verbal |
 | [`docs/06-ai-agent-tizimi.md`](docs/06-ai-agent-tizimi.md) | Marketing konveyeri: qaysi agent nima qiladi (arxitektura) |
 | [`docs/07-byudjet.md`](docs/07-byudjet.md) | Byudjet taqsimoti — har Expo uchun $5,000 (Xitoy + Qozog'iston) |
+| [`docs/08-agency-python-tizimi.md`](docs/08-agency-python-tizimi.md) | **Ishlaydigan tizim** — 6 darajali Python agent (`agency/`) xaritasi |
 
 ---
 
+## Ishlaydigan tizim — `agency/` (Python)
+
+6 darajali ierarxik AI-agent tizimi (CMO→PM→Head→Worker→Sub) qurilgan va sinovdan o'tgan:
+delegatsiya/dekompozitsiya · qat'iy tasdiqlash + eskalatsiya · Hermes xotira · LLM
+(Anthropic/OpenRouter) · Tools (Apify B2B · Supabase CRM · Telegram · Meta Ads · Midjourney) ·
+E2E kampaniya sikli · analitika · 14 test. Batafsil: [`docs/08`](docs/08-agency-python-tizimi.md),
+[`agency/README.md`](agency/README.md).
+
+```bash
+cd agency && pip install -r requirements.txt
+python3 status.py                        # jonli-tayyorlik (qaysi tool live/stub)
+python3 run_campaign.py build-pro-expo   # bitta Expo — to'liq E2E (stub)
+python3 tests/run_tests.py               # 14 test
+```
+
 ## Hozirgi bosqich
 
-- [x] Barcha xom ma'lumotni saralab, takrorsiz bazaga yig'ish (**sartirovka**)
-- [ ] AI-agent tizimi arxitekturasini tasdiqlash
-- [ ] Ulangan tool'lar (Meta Ads, Gmail, Google Calendar, Supabase) orqali real avtomatlashtirish
-- [ ] Kontent va outreach konveyerini ishga tushirish
+- [x] Xom ma'lumotni saralash (**sartirovka**) va strategiya bazasi (`docs/`)
+- [x] 6 darajali agent tizimi (`agency/`) — arxitektura, delegatsiya, eskalatsiya
+- [x] LLM + Hermes xotira + Tools (Apify/CRM/Telegram/Meta Ads) + E2E + testlar
+- [ ] Jonli Supabase (bepul limit ochilgach) + real kalitlar bilan uchdan-uchiga jonli run
 
-## Ulangan resurslar (potentsial avtomatlashtirish uchun)
+## Ulangan resurslar
 
-Meta Ads · Gmail · Google Calendar · Supabase · Mobbin · 21st.dev (UI) — sessiyaga ulangan.
-Bular orqali kampaniya, email outreach, CRM va lead-voronka avtomatlashtiriladi.
+Meta Ads · Gmail · Google Calendar · Supabase · Mobbin · 21st.dev — sessiyaga ulangan.
