@@ -107,6 +107,7 @@ python3 main.py               # CMO→PM→Head delegatsiya oqimi (dry-run)
 FAIL_IDS=targetolog python3 main.py   # eskalatsiya demosi
 python3 demo_integration.py   # dekompozitsiya + Tools + LLM + Hermes xotira
 python3 run_campaign.py build-pro-expo   # bitta Expo uchun TO'LIQ E2E kampaniya sikli
+python3 tests/run_tests.py    # yengil test to'plami (12 tekshiruv)
 
 # Real Claude bilan:
 DRY_RUN=0 ANTHROPIC_API_KEY=... python3 main.py
@@ -121,10 +122,33 @@ DRY_RUN=0 LLM_PROVIDER=openrouter OPENROUTER_API_KEY=... python3 main.py
   izoh (feedback) LLM'ga uzatiladi.
 - **Hermes xotira:** rad etilganda/eskalatsiyada quyi agent xatosini va darsini `MEMORY.md`
   ning `Lessons Learned` bo'limiga **append-only** (sana bilan) yozadi. `MEMORY_WRITE=0` — o'chirish.
-- **Tools (`src/tools/`):** `ApifyScraper` (lead scraping), `TelegramBot` (CMO/PM bildirishnoma),
-  `CRMClient` (Supabase lead/deal), `MetaAds`, `Midjourney`. Kalit yo'q → xavfsiz **stub** rejim.
+- **Tools (`src/tools/`):** `ApifyScraper` (B2B lead scraping), `TelegramBot` (signal),
+  `CRMClient` (Supabase leads/contacts/logs), `MetaAds` (kampaniya: campaign→adset→ad),
+  `Midjourney`. Kalit yo'q → xavfsiz **stub** rejim; kalit qo'yilsa avtomatik **live**.
+
+## E2E kampaniya zanjiri (`run_campaign.py`)
+
+```
+g'oya → CMO dekompozitsiya → bo'limlar (kontent/dizayn/reklama/lead)
+  → SCRAPER (Apify B2B, til→davlat: ru=KZ, en=GLOBAL, zh=CN) → leads
+  → OUTREACH (o'z davlati leadlariga xat) → contacts voronka (engaged/hot)
+  → TARGETOLOG (Meta Ads, KZ) → HOT kontaktlarni retarget
+  → qat'iy tasdiqlash/eskalatsiya → Telegram signal
+  → Supabase: leads + contacts + campaign_logs + tasks + campaign_runs
+```
+
+## Jonli qilish (kodga tegmasdan)
+
+`.env` ga kalit qo'yilsa tool'lar `stub → live` bo'ladi:
+`ANTHROPIC_API_KEY`/`OPENROUTER_API_KEY` · `APIFY_TOKEN`+`APIFY_B2B_ACTOR` ·
+`SUPABASE_URL`+`SUPABASE_SERVICE_ROLE_KEY` · `TELEGRAM_BOT_TOKEN`+`TELEGRAM_CHAT_ID` ·
+`META_ADS_ACCOUNT_ID`+`META_ADS_TOKEN`. Supabase sxemasi: `db/migration.sql`.
+
+```bash
+DRY_RUN=0 python3 run_campaign.py build-pro-expo   # to'liq jonli
+```
 
 ## Keyingi bosqich
 
-Bo'lim boshliqlari uchun vazifa-bo'lish mantig'ini nozik sozlash · Tools'ni real
-kalitlar bilan ishga ulash · outreach/kontent voronkasini CRM bilan uchdan-uchiga bog'lash.
+Supabase loyihasini ulash (bepul joy ochilгач) va jonli E2E · outreach xatini LLM bilan
+yozib real yuborish · Meta Ads real kampaniya (PAUSED → faollashtirish) · analitika hisoboti.

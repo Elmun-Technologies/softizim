@@ -49,6 +49,28 @@ class CRMClient(BaseTool):
             return {"mode": "stub", "stored": len(self._contacts)}
         return self._rest("POST", "contacts", row)
 
+    def route_contact(self, lead: dict, stage: str = "engaged", lang: str = "ru") -> dict:
+        """Outreach'dan kelgan kontaktni voronka bosqichiga yo'naltiradi (engaged/hot/...)."""
+        row = {
+            "lead_id": lead.get("id"),
+            "full_name": lead.get("name"),
+            "email": lead.get("email"),
+            "phone": lead.get("phone"),
+            "lang": lang,
+            "stage": stage,
+        }
+        if not self.available():
+            self._contacts.append(row)
+            return {"mode": "stub", "stage": stage, "total": len(self._contacts)}
+        return self._rest("POST", "contacts", {k: v for k, v in row.items() if v is not None})
+
+    def list_contacts(self, stage: str | None = None) -> list[dict]:
+        if not self.available():
+            return [c for c in self._contacts if not stage or c.get("stage") == stage]
+        path = "contacts?select=*" + (f"&stage=eq.{stage}" if stage else "")
+        res = self._rest("GET", path)
+        return res if isinstance(res, list) else []
+
     # --- umumiy insert (loglar: campaign_runs / campaign_logs / tasks) ---
     def insert(self, table: str, rows: list[dict] | dict) -> dict:
         rows = rows if isinstance(rows, list) else [rows]

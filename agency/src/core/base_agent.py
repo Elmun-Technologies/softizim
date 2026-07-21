@@ -56,10 +56,11 @@ class BaseAgent:
     def subordinates(self) -> list["BaseAgent"]:
         return [self.h.agents[m] for m in self.manages if m in self.h.agents]
 
-    # --- boshqaradigan tool'lar (Level 6) ---
+    # --- boshqaradigan tool'lar (Level 6): manages + config `tools` birlashmasi ---
     @property
     def tools(self) -> dict:
-        return {t: self.h.tools[t] for t in self.manages if t in self.h.tools}
+        ids = set(self.manages) | set(self.cfg.get("tools") or [])
+        return {t: self.h.tools[t] for t in ids if t in self.h.tools}
 
     # --- Hermes xotira ---
     def recall(self) -> str:
@@ -234,8 +235,12 @@ class BaseAgent:
     def act(self, task: Task) -> Result:
         if self.id in self.fail_ids:
             return Result(True, f"FAIL: {self.id} vazifani bajarolmadi (demo eskalatsiya)", "forced-fail")
-        if "apify" in self.tools:            # SCRAPER — real tool (LLM emas)
+        if self.id.startswith("scraper"):         # SCRAPER — Apify B2B + CRM
             return self._scrape(task)
+        if self.id == "targetolog":               # TARGETOLOG — Meta Ads
+            return self._run_ads(task)
+        if self.id.startswith("outreach"):        # OUTREACH — issiq kontakt voronkasi
+            return self._outreach(task)
         if self.dry_run or not self._has_key():
             note = "dry-run" + (f" (feedback: {task.feedback})" if task.feedback else "")
             return Result(True, f"[{self.id}] bajarildi: {task.title}", note)
@@ -253,6 +258,35 @@ class BaseAgent:
         n = saved.get("saved", saved.get("total", len(leads)))
         return Result(True, f"{len(leads)} B2B lead ({country}/{sector}) — CRM'ga {n} yozildi "
                             f"[apify:{apify.mode}, crm:{crm.mode if crm else '—'}]", "tool:scrape")
+
+    def _outreach(self, task: Task) -> Result:
+        """Outreach leaf: o'z davlati leadlariga xat → CRM contacts voronkasi (engaged/hot)."""
+        country = self.COUNTRY.get(self.id.rsplit("_", 1)[-1], "GLOBAL")
+        lang = {"ru": "ru", "en": "en", "zh": "zh"}.get(self.id.rsplit("_", 1)[-1], "ru")
+        crm = self.h.tools.get("crm_api")
+        if not crm:
+            return Result(True, f"[{self.id}] outreach (CRM yo'q)", "tool:outreach")
+        leads = [l for l in crm.list_leads() if l.get("country") == country][: self.h.context.get("outreach_limit", 5)]
+        engaged = hot = 0
+        for i, lead in enumerate(leads):
+            stage = "hot" if i % 3 == 0 else "engaged"   # heuristika: har 3-chi qiziqdi
+            crm.route_contact(lead, stage=stage, lang=lang)
+            engaged += 1
+            hot += stage == "hot"
+        return Result(True, f"Outreach ({country}/{lang}): {engaged} kontakt yaratildi, "
+                            f"{hot} HOT → CRM voronka [crm:{crm.mode}]", "tool:outreach")
+
+    def _run_ads(self, task: Task) -> Result:
+        """Targetolog leaf: Meta Ads kampaniya (KZ), issiq kontaktlarni retarget qiladi."""
+        meta = self.tools["meta_ads"]
+        crm = self.h.tools.get("crm_api")
+        sector = self.h.context.get("sector", "build")
+        budget = self.h.context.get("ad_budget_usd", 1700)   # Qozog'iston Meta byudjeti
+        hot = crm.list_contacts(stage="hot") if crm else []
+        res = meta.launch(name=f"{sector}-KZ-retarget", budget_usd=budget,
+                          country="KZ", audience_size=len(hot))
+        return Result(True, f"Meta Ads ({meta.mode}): '{res.get('campaign')}' · ${budget} · KZ · "
+                            f"{len(hot)} HOT kontakt retarget", "tool:meta_ads")
 
     def _act_llm(self, task: Task) -> Result:
         """Real rejim — Claude (Anthropic yoki OpenRouter) orqali, persona + xotira bilan."""

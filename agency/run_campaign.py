@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import os
 import sys
+import uuid
 
 from src.core.hierarchy import Hierarchy
 from src.core.workflow import TaskState
@@ -51,6 +52,8 @@ def main() -> None:
     idea = (f"{name} uchun 120 exponent yig'ish kampaniyasi. Byudjet $5000. "
             f"Xitoy va Qozog'iston ustuvor. Ipak Yo'li — Samarqand pozitsiyasi. "
             f"Kontent, dizayn, reklama va lead voronkasi tayyorlansin.")
+    run_id = str(uuid.uuid4())
+    crm = h.tools["crm_api"]
     cmo = h.agents[h.root_id]
     goal = h.workflow.create(title=f"{name}: 120 exponent kampaniyasi", assigner="ROOT",
                              assignee=cmo.id, payload=idea, acceptance=["Barcha bo'limlar bajardi"])
@@ -59,33 +62,43 @@ def main() -> None:
     bar("1) DEKOMPOZITSIYA + IJRO (CMO → PM → Head → Worker → Sub)")
     result = h.notify_wrap(cmo, goal)
 
-    # 2) Natijalar hisoboti
+    # 2) Lead voronkasi
     bar("2) LEAD VORONKASI (Apify B2B → Supabase `leads`)")
-    crm = h.tools["crm_api"]
     leads = crm.list_leads()
     print(f"CRM ulanishi: {crm.ping()}")
     print(f"Yig'ilgan B2B lead (KZ+CN+global): {len(leads)} kompaniya")
     for c in leads[:6]:
         print(f"  · {c.get('name')} [{c.get('country')}] {c.get('email','')} {c.get('instagram','')}")
 
-    bar("3) SIGNALLAR VA AUDIT — Supabase loglariga yozish")
+    # 3) Issiq kontakt voronkasi (outreach → contacts) + Meta Ads retarget (targetolog)
+    bar("3) ISSIQ KONTAKT VORONKASI + META ADS")
+    hot = crm.list_contacts(stage="hot")
+    engaged = crm.list_contacts(stage="engaged")
+    print(f"Kontaktlar: {len(engaged)} engaged · {len(hot)} HOT")
+    for c in hot[:4]:
+        print(f"  🔥 {c.get('full_name')} [{c.get('lang')}] {c.get('email','')}")
+    ad = h.tools["meta_ads"].launch(name=f"{sector}-KZ-retarget", budget_usd=1700,
+                                    country="KZ", audience_size=len(hot))
+    print(f"Meta Ads ({ad['mode']}): '{ad['campaign']}' · ${1700} · KZ · retarget {len(hot)} HOT")
+
+    # 4) Loglar → Supabase
+    bar("4) SIGNALLAR VA AUDIT — Supabase loglariga")
     kinds: dict[str, int] = {}
     for m in h.bus.trace:
         kinds[m.kind.value] = kinds.get(m.kind.value, 0) + 1
-    print(f"Xabarlar (MessageBus): {kinds}")
-    print(f"Vazifalar (WorkflowManager): {len(h.workflow.tasks)}")
-
-    # Loglarni DB'ga yozish (jonli bo'lsa campaign_logs / tasks jadvallariga)
-    msgs = [{"kind": m.kind.value, "frm": m.frm, "to_agent": m.to, "task_id": m.task_id, "note": m.note}
-            for m in h.bus.trace]
-    states = [{"task_id": t.id, "assigner": t.assigner, "assignee": t.assignee,
+    print(f"Xabarlar (MessageBus): {kinds}  ·  Vazifalar: {len(h.workflow.tasks)}")
+    msgs = [{"run_id": run_id, "kind": m.kind.value, "frm": m.frm, "to_agent": m.to,
+             "task_id": m.task_id, "note": m.note} for m in h.bus.trace]
+    states = [{"run_id": run_id, "task_id": t.id, "assigner": t.assigner, "assignee": t.assignee,
                "title": t.title, "state": t.state.value} for t in h.workflow.tasks.values()]
     print(f"  campaign_logs: {crm.insert('campaign_logs', msgs)}")
     print(f"  tasks:         {crm.insert('tasks', states)}")
+    status = "done" if result.ok else "escalated"
+    print(f"  campaign_runs: {crm.insert('campaign_runs', {'id': run_id, 'event_id': event_id, 'goal': goal.title, 'status': status, 'leads_found': len(leads)})}")
 
-    bar("4) YAKUNIY NATIJA (CMO)")
-    print(f"Muvaffaqiyat: {result.ok}  ({result.note})")
-    print(result.output[:800])
+    bar("5) YAKUNIY NATIJA (CMO)")
+    print(f"Muvaffaqiyat: {result.ok}  ({result.note})  ·  run_id={run_id[:8]}")
+    print(result.output[:600])
     print("\n✅ End-to-End kampaniya sikli tugadi.")
 
 
