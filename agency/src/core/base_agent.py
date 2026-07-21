@@ -239,6 +239,8 @@ class BaseAgent:
             return self._scrape(task)
         if self.id == "targetolog":               # TARGETOLOG — Meta Ads
             return self._run_ads(task)
+        if self.id == "visual_designer":          # VISUAL DESIGNER — Midjourney
+            return self._render(task)
         if self.id.startswith("outreach"):        # OUTREACH — issiq kontakt voronkasi
             return self._outreach(task)
         if self.dry_run or not self._has_key():
@@ -275,6 +277,16 @@ class BaseAgent:
             hot += stage == "hot"
         return Result(True, f"Outreach ({country}/{lang}): {engaged} kontakt yaratildi, "
                             f"{hot} HOT → CRM voronka [crm:{crm.mode}]", "tool:outreach")
+
+    def _render(self, task: Task) -> Result:
+        """Visual Designer leaf: Midjourney render (brend ranglari bilan)."""
+        mj = self.tools["midjourney"]
+        sector = self.h.context.get("sector", "build")
+        prompt = (f"Sof Expo Samarkand — {sector} expo stend, Registon ko'k #0E4D6A + "
+                  f"Ipak oltini #D4AF37, premium, Silk Road, minimalist")
+        res = mj.render(prompt, ar="4:5")
+        return Result(True, f"Vizual render ({mj.mode}): {sector} · brend ranglar · "
+                            f"url={res.get('image_url') or '(stub)'}", "tool:midjourney")
 
     def _run_ads(self, task: Task) -> Result:
         """Targetolog leaf: Meta Ads kampaniya (KZ), issiq kontaktlarni retarget qiladi."""

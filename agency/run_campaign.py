@@ -16,6 +16,7 @@ import os
 import sys
 import uuid
 
+from src.core.analytics import campaign_metrics, format_metrics
 from src.core.hierarchy import Hierarchy
 from src.core.workflow import TaskState
 
@@ -96,7 +97,10 @@ def main() -> None:
     status = "done" if result.ok else "escalated"
     print(f"  campaign_runs: {crm.insert('campaign_runs', {'id': run_id, 'event_id': event_id, 'goal': goal.title, 'status': status, 'leads_found': len(leads)})}")
 
-    bar("5) YAKUNIY NATIJA (CMO)")
+    bar("5) ANALITIKA (x4 richag voronkasi)")
+    print(format_metrics(campaign_metrics(crm)))
+
+    bar("6) YAKUNIY NATIJA (CMO)")
     print(f"Muvaffaqiyat: {result.ok}  ({result.note})  ·  run_id={run_id[:8]}")
     print(result.output[:600])
     print("\n✅ End-to-End kampaniya sikli tugadi.")

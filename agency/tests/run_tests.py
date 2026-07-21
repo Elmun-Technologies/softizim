@@ -84,6 +84,12 @@ check("outreach hot kontakt yaratdi", len(crm.list_contacts("hot")) >= 1)
 ad = h.tools["meta_ads"].launch("t", 1700, "KZ")
 check("meta_ads kampaniya qaytardi", ad.get("campaign") == "t")
 
+print("7) Analitika — voronka metrikalari")
+from src.core.analytics import campaign_metrics
+m = campaign_metrics(crm)
+check("leads=9 metrikada", m["leads"] == 9)
+check("konversiya foizi hisoblandi", m["lead_to_contact_pct"] > 0)
+
 print("\n" + "=" * 50)
 print(f"NATIJA: {PASS} PASS · {FAIL} FAIL")
 sys.exit(1 if FAIL else 0)
