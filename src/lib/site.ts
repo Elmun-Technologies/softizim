@@ -18,7 +18,7 @@ export const site = {
 export const nav = [
   { label: "Xizmatlar", href: "/xizmatlar" },
   { label: "Loyihalar", href: "/loyihalar" },
-  { label: "Narxlar", href: "/#narxlar" },
+  { label: "Blog", href: "/blog" },
   { label: "Biz haqimizda", href: "/biz-haqimizda" },
   { label: "Aloqa", href: "/aloqa" },
 ] as const;
@@ -339,4 +339,103 @@ export const faqs = [
     q: "Kodni menga topshirasizmi?",
     a: "Ha, to'liq manba kodi va hujjatlar sizga tegishli bo'ladi. Hech qanday bog'liqlik (vendor lock-in) yo'q.",
   },
+];
+
+export type Team = {
+  name: string;
+  role: string;
+  initials: string;
+  accent: string;
+};
+
+export const team: Team[] = [
+  {
+    name: "Nazirjon Elmurodov",
+    role: "Asoschisi & CEO",
+    initials: "NE",
+    accent: "#6366f1",
+  },
+  {
+    name: "Jasur Aliyev",
+    role: "Bosh muhandis (CTO)",
+    initials: "JA",
+    accent: "#06b6d4",
+  },
+  {
+    name: "Malika Tosheva",
+    role: "Bosh dizayner",
+    initials: "MT",
+    accent: "#4f46e5",
+  },
+  {
+    name: "Bekzod Rustamov",
+    role: "Loyihalar menejeri",
+    initials: "BR",
+    accent: "#0891b2",
+  },
+];
+
+export type Job = {
+  slug: string;
+  title: string;
+  type: string;
+  location: string;
+  level: string;
+  summary: string;
+  requirements: string[];
+};
+
+export const jobs: Job[] = [
+  {
+    slug: "frontend-muhandis",
+    title: "Frontend muhandis",
+    type: "To'liq stavka",
+    location: "Toshkent / Masofaviy",
+    level: "Middle–Senior",
+    summary:
+      "React va Next.js asosida chiroyli, tez va foydalanuvchini o'ylagan interfeyslar quramiz. Jamoamizga tajribali frontend muhandis izlaymiz.",
+    requirements: [
+      "React va TypeScript'da 3+ yil tajriba",
+      "Next.js bilan ishlagan bo'lish",
+      "Tailwind CSS yoki zamonaviy CSS bilimi",
+      "Toza kod va jamoada ishlash madaniyati",
+    ],
+  },
+  {
+    slug: "backend-muhandis",
+    title: "Backend muhandis",
+    type: "To'liq stavka",
+    location: "Toshkent / Masofaviy",
+    level: "Middle–Senior",
+    summary:
+      "Barqaror va kengaytiriladigan API va tizimlar quramiz. Node.js yoki boshqa zamonaviy stack'da tajribali muhandis kutamiz.",
+    requirements: [
+      "Node.js / Go / Python'da 3+ yil tajriba",
+      "SQL va NoSQL ma'lumotlar bazalari",
+      "REST / GraphQL API dizayni",
+      "Bulut va CI/CD bilan tanishlik",
+    ],
+  },
+  {
+    slug: "mahsulot-dizayneri",
+    title: "Mahsulot dizayneri (UI/UX)",
+    type: "To'liq stavka",
+    location: "Toshkent",
+    level: "Middle",
+    summary:
+      "Foydalanuvchi tadqiqotidan tayyor interfeysgacha — mahsulotlarimiz dizaynini shakllantiruvchi ijodkor dizayner izlaymiz.",
+    requirements: [
+      "Figma'da yuqori darajada ishlash",
+      "Dizayn tizimlari bilan tajriba",
+      "Portfolio (real loyihalar)",
+      "Foydalanuvchi tajribasiga e'tibor",
+    ],
+  },
+];
+
+export const perks = [
+  { icon: "rocket", title: "O'sish imkoniyati", text: "Zamonaviy loyihalar va doimiy o'rganish muhiti." },
+  { icon: "globe", title: "Masofaviy ish", text: "Moslashuvchan jadval va masofadan ishlash imkoniyati." },
+  { icon: "headset", title: "Kuchli jamoa", text: "Tajribali va bir-birini qo'llab-quvvatlovchi jamoa." },
+  { icon: "sparkles", title: "Raqobatbardosh maosh", text: "Bilim va natijaga yarasha munosib ish haqi." },
 ];

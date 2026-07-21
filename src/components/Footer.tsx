@@ -65,6 +65,14 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/vakansiyalar"
+                  className="text-sm text-muted transition-colors hover:text-fg"
+                >
+                  Vakansiyalar
+                </Link>
+              </li>
             </ul>
           </div>
 

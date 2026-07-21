@@ -3,7 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { Section, SectionHeader } from "@/components/ui/Section";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Cta } from "@/components/sections/Cta";
-import { stats } from "@/lib/site";
+import { stats, team } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Biz haqimizda",
@@ -103,6 +103,33 @@ export default function AboutPage() {
               <p className="mt-2 text-sm leading-relaxed text-muted">
                 {v.text}
               </p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section>
+        <SectionHeader
+          eyebrow="Jamoa"
+          title="Softizim ortidagi insonlar"
+          subtitle="Turli sohalardagi mutaxassislar bir maqsad yo'lida — sifatli mahsulot yaratish uchun."
+        />
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {team.map((member) => (
+            <div
+              key={member.name}
+              className="group rounded-2xl border border-border bg-card p-6 text-center shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-glow"
+            >
+              <span
+                className="mx-auto flex h-20 w-20 items-center justify-center rounded-full text-2xl font-bold text-white"
+                style={{
+                  background: `linear-gradient(135deg, ${member.accent}, ${member.accent}99)`,
+                }}
+              >
+                {member.initials}
+              </span>
+              <h3 className="mt-5 text-base font-semibold">{member.name}</h3>
+              <p className="mt-1 text-sm text-muted">{member.role}</p>
             </div>
           ))}
         </div>
