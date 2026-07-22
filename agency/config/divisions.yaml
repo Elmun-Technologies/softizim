@@ -1,0 +1,57 @@
+# Sof Expo Agency — TO'LIQ IERARXIYA XARITASI (6 daraja)
+# Bu — butun tashkilotning yagona manbasi. Hierarchy loader shu fayldan daraxt quradi.
+# Har agentning batafsil sozlamasi: config/<id>.yaml
+
+meta:
+  company: "Sof Expo Markazi"
+  scope: "Yiliga 10 ta xalqaro Expo — marketing avtomatlashtiruvi"
+  framework: "agency-agents (moslashtirilgan) + Python runtime + Hermes memory"
+
+hierarchy:
+  level1:
+    - id: cmo
+      role_uz: "Bosh Marketing Direktori"
+      manages: [pm]
+
+  level2:
+    - id: pm
+      role_uz: "Loyiha Menejeri"
+      reports_to: cmo
+      manages: [head_smm, head_leadgen, head_content, head_traffic, head_tech]
+
+  level3:  # Bo'lim boshliqlari
+    - { id: head_smm,     role_uz: "SMM Boshlig'i",       reports_to: pm, manages: [insta_worker, audience_ru, audience_en, audience_zh] }
+    - { id: head_leadgen, role_uz: "Lead Gen Boshlig'i",  reports_to: pm, manages: [leadgen_ru, leadgen_en, leadgen_zh] }
+    - { id: head_content, role_uz: "Kontent Boshlig'i",   reports_to: pm, manages: [blog_post] }
+    - { id: head_traffic, role_uz: "Trafik Boshlig'i",    reports_to: pm, manages: [targetolog] }
+    - { id: head_tech,    role_uz: "Texnik Boshliq",      reports_to: pm, manages: [web_manager] }
+
+  level4:  # Bo'limlar / ishchilar
+    - { id: insta_worker,    role_uz: "Instagram Ishchisi (x10)", reports_to: head_smm,     manages: [caption_writer, visual_designer, trend_auditor], instances: 10 }
+    - { id: audience_ru,     role_uz: "Rus auditoriyasi",         reports_to: head_smm,     manages: [] }
+    - { id: audience_en,     role_uz: "Ingliz auditoriyasi",      reports_to: head_smm,     manages: [] }
+    - { id: audience_zh,     role_uz: "Xitoy auditoriyasi",       reports_to: head_smm,     manages: [] }
+    - { id: targetolog,      role_uz: "Targetolog",               reports_to: head_traffic, manages: [] }
+    - { id: web_manager,     role_uz: "Veb Menejer",              reports_to: head_tech,    manages: [] }
+    - { id: blog_post,       role_uz: "Blog Muallifi",            reports_to: head_content, manages: [] }
+    - { id: leadgen_ru,      role_uz: "Lead Gen RU Agenti",       reports_to: head_leadgen, manages: [scraper_ru, outreach_ru] }
+    - { id: leadgen_en,      role_uz: "Lead Gen EN Agenti",       reports_to: head_leadgen, manages: [scraper_en, outreach_en] }
+    - { id: leadgen_zh,      role_uz: "Lead Gen ZH Agenti",       reports_to: head_leadgen, manages: [scraper_zh, outreach_zh] }
+
+  level5:  # Sub-agentlar
+    - { id: caption_writer,  role_uz: "Sarlavha/Matn Yozuvchi", reports_to: insta_worker, manages: [] }
+    - { id: visual_designer, role_uz: "Vizual Dizayner",        reports_to: insta_worker, manages: [midjourney] }
+    - { id: trend_auditor,   role_uz: "Trend Auditori",         reports_to: insta_worker, manages: [] }
+    - { id: scraper_ru,      role_uz: "Skraper (RU)",           reports_to: leadgen_ru,   manages: [apify] }
+    - { id: outreach_ru,     role_uz: "Outreach (RU)",          reports_to: leadgen_ru,   manages: [telegram_bot, crm_api] }
+    - { id: scraper_en,      role_uz: "Skraper (EN)",           reports_to: leadgen_en,   manages: [apify] }
+    - { id: outreach_en,     role_uz: "Outreach (EN)",          reports_to: leadgen_en,   manages: [telegram_bot, crm_api] }
+    - { id: scraper_zh,      role_uz: "Skraper (ZH)",           reports_to: leadgen_zh,   manages: [apify] }
+    - { id: outreach_zh,     role_uz: "Outreach (ZH)",          reports_to: leadgen_zh,   manages: [telegram_bot, crm_api] }
+
+  level6:  # Tools (integratsiyalar — batafsil: config/L6_tools.yaml)
+    - { id: midjourney,   type: tool }
+    - { id: apify,        type: tool }
+    - { id: telegram_bot, type: tool }
+    - { id: crm_api,      type: tool }
+    - { id: meta_ads,     type: tool }

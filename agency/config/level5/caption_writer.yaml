@@ -1,0 +1,23 @@
+# Sof Expo Agency — Sarlavha/Matn Yozuvchi (Level 5)
+id: caption_writer
+level: 5
+role: "Caption Writer"
+role_uz: "Sarlavha/Matn Yozuvchi"
+model: claude-haiku-4-5
+reports_to: insta_worker
+manages: []
+mission: >
+  Post/reels uchun hook va caption yozadi (til va ohangga mos).
+responsibilities:
+  - Hook
+  - Caption
+  - Hashtag
+kpis:
+  - Hook CTR
+tools: []
+memory_file: memory/subagents/caption_writer.md
+persona_ref: null   # ixtiyoriy: agency-agents .md persona havolasi
+# --- muloqot ---
+delegation:
+  can_delegate_to: []
+  escalates_to: insta_worker

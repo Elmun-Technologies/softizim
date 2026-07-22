@@ -1,0 +1,27 @@
+# Sof Expo Agency — Scraper Rus/Qozog'iston (Level 5)
+id: scraper_ru
+level: 5
+role: "Scraper RU"
+role_uz: "Skraper (Rus/Qozog'iston)"
+model: claude-haiku-4-5
+reports_to: leadgen_ru
+manages:
+  - apify
+mission: >
+  Rossiya va Qozog'iston bozori manbalaridan (web/IG/Alibaba) strukturalangan lead ma'lumot yig'adi.
+responsibilities:
+  - Ma'lumot yig'ish (ru)
+  - Tozalash va normalizatsiya
+  - CRM'ga uzatish
+kpis:
+  - Yig'ilgan yozuv/hafta
+  - Aniqlik %
+tools:
+  - apify
+  - crm_api
+memory_file: memory/subagents/scraper_ru.md
+persona_ref: null
+delegation:
+  can_delegate_to:
+    - apify
+  escalates_to: leadgen_ru

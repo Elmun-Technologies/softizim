@@ -1,0 +1,32 @@
+# Sof Expo Agency — Instagram Ishchisi (Level 4)
+id: insta_worker
+level: 4
+role: "Instagram Worker"
+role_uz: "Instagram Ishchisi"
+model: claude-sonnet-5
+reports_to: head_smm
+manages:
+  - caption_writer
+  - visual_designer
+  - trend_auditor
+instances: 10   # x10 nusxa (har biri alohida xotira faylida)
+mission: >
+  Bitta tadbir/segment uchun Instagram profilini yuritadi: post, reels, story.
+responsibilities:
+  - Kunlik post/reels
+  - Trend kuzatish
+  - Izohlarga javob
+kpis:
+  - Post/hafta
+  - ER
+  - Saqlash (saves)
+tools: []
+memory_file: memory/workers/insta_worker.md
+persona_ref: null   # ixtiyoriy: agency-agents .md persona havolasi
+# --- muloqot ---
+delegation:
+  can_delegate_to:
+    - caption_writer
+    - visual_designer
+    - trend_auditor
+  escalates_to: head_smm
