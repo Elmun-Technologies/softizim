@@ -1,49 +1,88 @@
-# Sof Expo — Marketing Tizimi (Knowledge Base)
+# Softizim
 
-**Sof Expo Markazi** — Samarqand, O'zbekiston. Xalqaro ko'rgazmalar (Expo) tashkilotchisi.
-Bu repozitoriy Sof Expo marketingini "konveyer" tizimi sifatida — brend, PR, performance va
-AI-agentlar orqali avtomatlashtirilgan holda — qurish uchun bilim bazasi va (keyinchalik) kod.
+**Zamonaviy dasturiy yechimlar va SaaS platformasi** — Elmun Technologies tomonidan.
 
-> **Maqsad:** Sotuvlarni **x4** ga oshirish + xalqaro (Turkiya, Xitoy, Rossiya, Eron, Hindiston)
-> exponentlarni Samarqandga jalb qilish. Deyarli barcha marketing jarayoni AI-agentlarga topshiriladi.
+Softizim — bizneslar uchun veb, mobil va SaaS mahsulotlarini ishlab chiqadigan
+dasturiy injiniring studiyasining marketing va mahsulot platformasi. Ushbu repo
+kompaniyaning veb-saytini o'z ichiga oladi: xizmatlar, portfolio, narxlar va
+aloqa formasi bilan.
+
+## Texnologiyalar
+
+- **[Next.js 16](https://nextjs.org)** — App Router, Turbopack
+- **React 19** + **TypeScript** (strict)
+- **Tailwind CSS v4** — CSS-first tema, `.dark` klass strategiyasi
+- **ESLint 9** (flat config)
+
+## Imkoniyatlar
+
+- 🎨 Zamonaviy, responsive dizayn (mobil, planshet, desktop)
+- 🌗 Yorug'/Qorong'i rejim (FOUC'siz, `localStorage`da saqlanadi)
+- 🧩 Qayta ishlatiladigan komponentlar va dizayn tizimi
+- 📄 Sahifalar: Bosh sahifa, Xizmatlar, Loyihalar, Biz haqimizda, Aloqa
+- 📬 Aloqa formasi + serverda validatsiya (`/api/contact`)
+- 🔍 SEO: metadata, Open Graph, `sitemap.xml`, `robots.txt`
+- ⚡ Statik generatsiya (SSG) — tez yuklanish
+
+## Ishga tushirish
+
+```bash
+npm install       # bog'liqliklarni o'rnatish
+npm run dev       # http://localhost:3000 da ishlab chiqish serveri
+npm run build     # production build
+npm run start     # production serverni ishga tushirish
+npm run lint      # ESLint tekshiruvi
+npm run typecheck # TypeScript tekshiruvi
+```
+
+## Loyiha tuzilishi
+
+```
+src/                          # Next.js veb-sayt (Softizim platformasi)
+├── app/                      # App Router sahifalari
+│   ├── layout.tsx            # Umumiy layout (Header, Footer, tema)
+│   ├── page.tsx              # Bosh sahifa
+│   ├── xizmatlar/ loyihalar/ biz-haqimizda/ aloqa/
+│   ├── api/contact/          # Aloqa formasi API route
+│   └── sitemap.ts robots.ts  # SEO
+├── components/ (sections/ cards/ ui/ Header Footer ThemeToggle)
+└── lib/site.ts               # Sayt kontenti va konfiguratsiyasi
+
+docs/                         # Sof Expo marketing bilim bazasi (strategiya)
+agency/                       # Sof Expo — 6 darajali AI-agent marketing tizimi (Python)
+```
+
+## Kontentni tahrirlash
+
+Saytdagi barcha matnlar, xizmatlar, narxlar, loyihalar va savol-javoblar
+`src/lib/site.ts` faylida markazlashtirilgan. Kontentni o'zgartirish uchun shu
+faylni tahrirlash yetarli.
 
 ---
 
-## Tadbirlar taqvimi (2025–2027)
+## Sof Expo Marketing Tizimi (`docs/` + `agency/`)
 
-| Oy | Tadbir | Yo'nalish | Holati |
-| --- | --- | --- | --- |
-| Sentabr | **Promotors Show** | Reklama / promo / marketing sanoati | Rejalashtirilgan |
-| Oktabr | **Build Pro Expo** | Qurilish, interyer, materiallar | Rejalashtirilgan |
-| Noyabr | **Food Era** | Oziq-ovqat, ichimlik, HoReCa | Rejalashtirilgan |
-| Mart 2027 | **Agro Pro Expo** | Qishloq xo'jaligi, texnika, agro | Rejalashtirilgan |
-| Aprel 2027 | **Edu Expo** | Ta'lim, EdTech | Rejalashtirilgan |
+Repo veb-saytdan tashqari **Sof Expo Markazi (Samarqand)** uchun to'liq marketing
+avtomatlashtirish tizimini ham o'z ichiga oladi — brend, PR, performance strategiyasi
+va 6 darajali ierarxik AI-agent konveyeri.
 
----
-
-## Hujjatlar tuzilmasi (bilim bazasi)
+**Strategiya bazasi — [`docs/`](docs/):**
 
 | Fayl | Nima haqida |
 | --- | --- |
-| [`docs/00-loyiha-konteksti.md`](docs/00-loyiha-konteksti.md) | Sof Expo profili, maqsad, x4 reja, hozirgi holat |
-| [`docs/01-raqobatchilar-bazasi.md`](docs/01-raqobatchilar-bazasi.md) | 90+ jahon Expo va stend quruvchilar — saralangan, takrorsiz baza |
-| [`docs/02-eksponent-jalb-playbook.md`](docs/02-eksponent-jalb-playbook.md) | Exponent jalb qilishning ~30 usuli — kategoriyalarga bo'lingan |
-| [`docs/03-xalqaro-jalb-samarkand.md`](docs/03-xalqaro-jalb-samarkand.md) | Chet el kompaniyalarini Samarqandga olib kelish (maxsus) |
-| [`docs/04-pr-strategiya.md`](docs/04-pr-strategiya.md) | PR: xalqaro + ichki bozor, 6 oylik taqvim, KPI |
-| [`docs/05-brand-strategiya.md`](docs/05-brand-strategiya.md) | Brend: 9 qadam, pozitsiya, vizual, verbal |
-| [`docs/06-ai-agent-tizimi.md`](docs/06-ai-agent-tizimi.md) | Marketing konveyeri: qaysi agent nima qiladi (arxitektura) |
-| [`docs/07-byudjet.md`](docs/07-byudjet.md) | Byudjet taqsimoti — har Expo uchun $5,000 (Xitoy + Qozog'iston) |
-| [`docs/08-agency-python-tizimi.md`](docs/08-agency-python-tizimi.md) | **Ishlaydigan tizim** — 6 darajali Python agent (`agency/`) xaritasi |
+| [`00`](docs/00-loyiha-konteksti.md) | Sof Expo profili, maqsad, x4 reja |
+| [`01`](docs/01-raqobatchilar-bazasi.md) | 90+ jahon Expo va stend quruvchilar bazasi |
+| [`02`](docs/02-eksponent-jalb-playbook.md) | Exponent jalb qilish playbook (~30 usul) |
+| [`03`](docs/03-xalqaro-jalb-samarkand.md) | Chet el kompaniyalarini Samarqandga jalb qilish |
+| [`04`](docs/04-pr-strategiya.md) · [`05`](docs/05-brand-strategiya.md) | PR + Brend strategiya |
+| [`06`](docs/06-ai-agent-tizimi.md) · [`07`](docs/07-byudjet.md) | AI-agent konveyeri + byudjet ($5000/Expo) |
+| [`08`](docs/08-agency-python-tizimi.md) | **Ishlaydigan tizim** — 6 darajali Python agent xaritasi |
 
----
+**Ishlaydigan tizim — [`agency/`](agency/) (Python):**
 
-## Ishlaydigan tizim — `agency/` (Python)
-
-6 darajali ierarxik AI-agent tizimi (CMO→PM→Head→Worker→Sub) qurilgan va sinovdan o'tgan:
-delegatsiya/dekompozitsiya · qat'iy tasdiqlash + eskalatsiya · Hermes xotira · LLM
-(Anthropic/OpenRouter) · Tools (Apify B2B · Supabase CRM · Telegram · Meta Ads · Midjourney) ·
-E2E kampaniya sikli · analitika · 14 test. Batafsil: [`docs/08`](docs/08-agency-python-tizimi.md),
-[`agency/README.md`](agency/README.md).
+6 darajali ierarxiya (CMO→PM→Head→Worker→Sub) — delegatsiya/dekompozitsiya · qat'iy
+tasdiqlash + eskalatsiya · Hermes xotira · LLM (Anthropic/OpenRouter) · Tools (Apify B2B ·
+Supabase CRM · Telegram · Meta Ads · Midjourney) · E2E kampaniya sikli · analitika · 14 test.
 
 ```bash
 cd agency && pip install -r requirements.txt
@@ -52,13 +91,8 @@ python3 run_campaign.py build-pro-expo   # bitta Expo — to'liq E2E (stub)
 python3 tests/run_tests.py               # 14 test
 ```
 
-## Hozirgi bosqich
+Batafsil: [`agency/README.md`](agency/README.md).
 
-- [x] Xom ma'lumotni saralash (**sartirovka**) va strategiya bazasi (`docs/`)
-- [x] 6 darajali agent tizimi (`agency/`) — arxitektura, delegatsiya, eskalatsiya
-- [x] LLM + Hermes xotira + Tools (Apify/CRM/Telegram/Meta Ads) + E2E + testlar
-- [ ] Jonli Supabase (bepul limit ochilgach) + real kalitlar bilan uchdan-uchiga jonli run
+---
 
-## Ulangan resurslar
-
-Meta Ads · Gmail · Google Calendar · Supabase · Mobbin · 21st.dev — sessiyaga ulangan.
+© Elmun Technologies
